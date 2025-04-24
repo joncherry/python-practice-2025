@@ -7,7 +7,7 @@ I was given these goals to try to include in the project:
 Proficiency in Python 3. Experience with writing modular, maintainable code. Debugging and exception handling.
 - [ ] 🔄 Data Integration & Middleware
 Building REST API clients (e.g., using requests) Handling JSON, XML, and other structured payloads. Designing middleware for syncing data (orders, pricing, inventory) between systems.
-- [] 🌐 Web Scraping & Automation
+- [ ] 🌐 Web Scraping & Automation
 Scraping data with tools like BeautifulSoup, lxml, or SeleniumHandling pagination, dynamic content, and headers/cookiesRespecting robots.txt / rate limits (ethical scraping)
 - [ ] 📊 Data Handling & Cleaning
 Cleaning structured data using pandas. Parsing and exploring unstructured data (e.g., free text, HTML, nested JSON) Familiarity with datetime manipulation, null handling, type coercion.
