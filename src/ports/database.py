@@ -8,5 +8,5 @@ class DatabaseData(metaclass=abc.ABCMeta):
                 NotImplemented)
 
     @abc.abstractmethod
-    def getTableSingleRow(self, table_name: str):
+    def getTableSingleRow(table_name: str):
         raise NotImplementedError

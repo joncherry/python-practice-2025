@@ -3,10 +3,10 @@ import abc
 class SourceData(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'getZillowData') and 
-                callable(subclass.getZillowData) or 
+        return (hasattr(subclass, 'getHomePriceData') and 
+                callable(subclass.getHomePriceData) or 
                 NotImplemented)
 
     @abc.abstractmethod
-    def getZillowData():
+    def getHomePriceData():
         raise NotImplementedError

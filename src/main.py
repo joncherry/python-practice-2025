@@ -1,14 +1,13 @@
-from ports import source
-from adapters import nasdaq
+from connections import source
+from connections import database
 
 def main():
-    a = start(nasdaq.NasdaqData)
+    sourceData = source.connection()
+    a = sourceData.getHomePriceData()
     print(a)
-
-def start(sourceData: source.SourceData):
-    a = sourceData.getZillowData()
-    return a
-    
+    databaseData = database.connection()
+    b = databaseData.getTableSingleRow("`sandboxproject2025.firsttest.testtable2`")
+    print(b)
 
 if __name__ == "__main__":
     main()
