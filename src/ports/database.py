@@ -1,6 +1,6 @@
 import abc
 
-class DatabaseData(metaclass=abc.ABCMeta):
+class Data(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'getTableSingleRow') and 

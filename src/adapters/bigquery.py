@@ -1,7 +1,7 @@
 from google.cloud import bigquery
-from ports import source
+from ports import database
 
-class BigQueryData():
+class Data(database.Data):
     def getTableSingleRow(table_name: str):
         # Construct a BigQuery client object.
         client = bigquery.Client()

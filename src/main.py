@@ -1,8 +1,8 @@
-from connections import source
+from connections import externalsource
 from connections import database
 
 def main():
-    sourceData = source.connection()
+    sourceData = externalsource.connection()
     a = sourceData.getHomePriceData()
     print(a)
     databaseData = database.connection()

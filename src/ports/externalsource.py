@@ -1,6 +1,6 @@
 import abc
 
-class SourceData(metaclass=abc.ABCMeta):
+class Data(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'getHomePriceData') and 
