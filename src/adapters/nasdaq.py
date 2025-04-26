@@ -1,0 +1,79 @@
+import nasdaqdatalink
+from ports import externalsource
+
+class Data(externalsource.Data):
+    def getHomePriceData():
+        raw_data = requestHomePrices()
+
+        normalized_data = adaptHomePrices(raw_data)
+
+        return normalized_data
+
+def requestHomePrices():
+        statesMap = {
+            "california": "9",
+            "texas": "54",
+            "florida": "14",
+            "new_york": "43",
+            "illinois": "21",
+            "ohio": "44",
+            "michigan": "30",
+            "georgia": "16",
+            "north_carolina": "36",
+            "new_jersey": "40",
+            "virginia": "56",
+            "washington": "59",
+            "arizona": "8",
+            "massachusetts": "26",
+            "indiana": "22",
+            "missouri": "32",
+            "colorado": "10",
+            "south_carolina": "51",
+            "alabama": "4",
+            "louisiana": "25",
+            "kentucky": "24",
+            "oklahoma": "45",
+            "connecticut": "11",
+            "utah": "55",
+            "iowa": "19",
+            "arkansas": "6",
+            "mississippi": "34",
+            "kansas": "23",
+            "new_mexico": "41",
+            "nebraska": "38",
+            "hawaii": "18",
+            "new_hampshire": "39",
+            "montana": "35",
+            "delaware": "13",
+            "north_dakota": "37",
+            "alaska": "3",
+            "district_of_columbia": "12",
+            "wyoming": "62",
+            "pennsylvania": "47",
+            "tennessee": "53",
+            "wisconsin": "60",
+            "minnesota": "31",
+            "maryland": "27",
+            "oregon": "46",
+            "nevada": "42",
+            "rhode_island": "50",
+            "idaho": "20",
+            "west_virginia": "61",
+            "maine": "28",
+            "vermont": "58",
+            "south_dakota": "52",
+        }
+
+        states = {}
+        for stateKey in statesMap:
+            regionID = statesMap[stateKey]
+            states[stateKey] = nasdaqdatalink.get_table('ZILLOW/DATA',indicator_id='ZSFH', region_id=regionID)
+
+        return states
+
+def adaptHomePrices(raw_data):
+    normalized_data = {}
+    for stateName in raw_data:
+        state = raw_data[stateName]
+        normalized_data[stateName] = state[state["date"].dt.year == 2024][["value"]].median().value
+    return normalized_data
