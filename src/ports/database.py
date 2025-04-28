@@ -3,10 +3,10 @@ import abc
 class Data(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'getTableSingleRow') and 
-                callable(subclass.getTableSingleRow) or 
+        return (hasattr(subclass, 'getHayPriceData') and 
+                callable(subclass.getHayPriceData) or 
                 NotImplemented)
 
     @abc.abstractmethod
-    def getTableSingleRow(table_name: str):
+    def getHayPriceData():
         raise NotImplementedError

@@ -1,17 +1,39 @@
 from google.cloud import bigquery
 from ports import database
+import numpy
 
 class Data(database.Data):
-    def getTableSingleRow(table_name: str):
-        # Construct a BigQuery client object.
-        client = bigquery.Client()
+    def getHayPriceData():
+        rows = requestResults()
+        return adaptResults(rows)
+        
+def requestResults():
+    client = bigquery.Client()
 
-        query = f"""
-            SELECT * FROM {table_name} LIMIT 1;
-        """
-        rows = client.query_and_wait(query)  # Make an API request.
+    query = f"""
+        SELECT
+            state_name,
+            ARRAY_AGG(value) as values
+        FROM
+            `bigquery-public-data.usda_nass_agriculture.crops`
+        WHERE
+            commodity_desc = "HAY"
+        AND year = 2021
+        AND country_name ="UNITED STATES"
+        AND unit_desc = "$ / TON"
+        AND state_name != "US TOTAL"
+        AND state_name is not null
+        AND value is not null
+        GROUP BY 
+            state_name
+        LIMIT
+            55;
+    """
+    rows = client.query_and_wait(query)
+    return rows
 
-        print("The query data:")
-        for row in rows:
-            # Row values can be accessed by field name or index.
-            print("id={}, member_name={}, icebreaker_joke={}".format(row["id"], row["member_name"], row["icebreaker_joke"]))
+def adaptResults(rows):
+    normalized_data = {}
+    for row in rows:
+        normalized_data[row["state_name"].lower().replace(" ", "_")] = numpy.median(row["values"])
+    return normalized_data

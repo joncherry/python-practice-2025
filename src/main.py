@@ -1,13 +1,9 @@
-from connections import externalsource
-from connections import database
+
+
+from core import start
 
 def main():
-    sourceData = externalsource.connection()
-    a = sourceData.getHomePriceData()
-    print(a)
-    databaseData = database.connection()
-    b = databaseData.getTableSingleRow("`sandboxproject2025.firsttest.testtable2`")
-    print(b)
+    print(start.run())
 
 if __name__ == "__main__":
     main()
