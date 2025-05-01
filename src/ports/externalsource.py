@@ -1,12 +1,15 @@
 import abc
 
+
 class Data(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'getHomePriceData') and 
-                callable(subclass.getHomePriceData) or 
-                NotImplemented)
+        return (
+            hasattr(subclass, "get_home_price_data")
+            and callable(subclass.get_home_price_data)
+            or NotImplemented
+        )
 
     @abc.abstractmethod
-    def getHomePriceData():
+    def get_home_price_data(self):
         raise NotImplementedError

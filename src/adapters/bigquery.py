@@ -2,12 +2,14 @@ from google.cloud import bigquery
 from ports import database
 import numpy
 
+
 class Data(database.Data):
-    def getHayPriceData():
-        rows = requestResults()
-        return adaptResults(rows)
-        
-def requestResults():
+    def get_hay_price_data(self):
+        rows = request_results()
+        return adapt_results(rows)
+
+
+def request_results():
     client = bigquery.Client()
 
     query = f"""
@@ -32,7 +34,8 @@ def requestResults():
     rows = client.query_and_wait(query)
     return rows
 
-def adaptResults(rows):
+
+def adapt_results(rows):
     normalized_data = {
         row["state_name"].lower().replace(" ", "_"): numpy.median(row["values"])
         for row in rows
