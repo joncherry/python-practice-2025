@@ -13,17 +13,17 @@ class Data(externalsource.Data):
 def requestHomePrices():
         config = yaml.safe_load(open("./config.yaml"))
         statesMap = config["nasdaqStatesMap"]
-
-        states = {}
-        for stateKey in statesMap:
-            regionID = statesMap[stateKey]
-            states[stateKey] = nasdaqdatalink.get_table('ZILLOW/DATA',indicator_id='ZSFH', region_id=regionID)
+        
+        states = {
+            stateKey: nasdaqdatalink.get_table('ZILLOW/DATA',indicator_id='ZSFH', region_id=statesMap[stateKey])
+            for stateKey in statesMap
+        }
 
         return states
 
 def adaptHomePrices(raw_data):
-    normalized_data = {}
-    for stateName in raw_data:
-        state = raw_data[stateName]
-        normalized_data[stateName] = state[state["date"].dt.year == 2021][["value"]].median().value
+    normalized_data = {
+        stateName: raw_data[stateName][raw_data[stateName]["date"].dt.year == 2021][["value"]].median().value
+        for stateName in raw_data
+    }
     return normalized_data
