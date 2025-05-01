@@ -33,7 +33,8 @@ def requestResults():
     return rows
 
 def adaptResults(rows):
-    normalized_data = {}
-    for row in rows:
-        normalized_data[row["state_name"].lower().replace(" ", "_")] = numpy.median(row["values"])
+    normalized_data = {
+        row["state_name"].lower().replace(" ", "_"): numpy.median(row["values"])
+        for row in rows
+    }
     return normalized_data
