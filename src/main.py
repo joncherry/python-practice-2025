@@ -1,8 +1,10 @@
-from core import start
+import flask
+
+app = flask.Flask(__name__)
 
 
 def main():
-    start.run()
+    app.run("localhost", 8080)
 
 
 if __name__ == "__main__":
