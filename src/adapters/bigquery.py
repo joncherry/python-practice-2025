@@ -4,7 +4,7 @@ import numpy
 
 
 class Data(database.Data):
-    def get_hay_price_data(self):
+    def get_hay_price_data(self=None):
         rows = request_results()
         return adapt_results(rows)
 

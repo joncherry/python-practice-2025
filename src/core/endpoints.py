@@ -6,7 +6,7 @@ from connections import motorolascraper
 
 
 class HomeHayPriceData(endpoint.Data):
-    def get_endpoint_report(self):
+    def get_endpoint_report(self=None):
         source_data = externalsource.connection()
         home_prices = source_data.get_home_price_data()
 
@@ -33,14 +33,14 @@ def calculationsOnHomeAndHay(home_prices, hay_prices):
 
 
 class AmazonData(endpoint.Data):
-    def get_endpoint_report(self):
+    def get_endpoint_report(self=None):
         amazon_scraper_data = amazonscraper.connection()
         amazon_results = amazon_scraper_data.get_scrape_result()
         return amazon_results
 
 
 class MotorolaData(endpoint.Data):
-    def get_endpoint_report(self):
+    def get_endpoint_report(self=None):
         motorola_scraper_data = motorolascraper.connection()
         motorola_results = motorola_scraper_data.get_scrape_result()
         return motorola_results

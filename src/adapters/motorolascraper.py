@@ -21,7 +21,7 @@ class URLRequestException(Exception):
 
 
 class Data(scraper.Data):
-    def get_scrape_result(self):
+    def get_scrape_result(self=None):
 
         urls = [
             "https://www.motorola.com/us/en/family/razr.html",
@@ -66,7 +66,7 @@ def with_retry(url, tries):
             return ""
         tries -= tries
         result = with_retry(url, tries)
-        return result
+    return result
 
 
 def make_request(url, wait_class_name, mode="wait"):

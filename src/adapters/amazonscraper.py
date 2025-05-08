@@ -5,7 +5,7 @@ import time
 
 
 class Data(scraper.Data):
-    def get_scrape_result(self):
+    def get_scrape_result(self=None):
         url = "https://www.amazon.com/s?k=motorola"
 
         response = requests.get(

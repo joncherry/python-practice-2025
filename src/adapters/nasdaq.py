@@ -4,7 +4,7 @@ import yaml
 
 
 class Data(externalsource.Data):
-    def get_home_price_data(self):
+    def get_home_price_data(self=None):
         raw_data = request_home_prices()
 
         normalized_data = adapt_home_prices(raw_data)

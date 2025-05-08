@@ -11,5 +11,5 @@ class Data(metaclass=abc.ABCMeta):
         )
 
     @abc.abstractmethod
-    def get_endpoint_report(self):
+    def get_endpoint_report(self=None):
         raise NotImplementedError

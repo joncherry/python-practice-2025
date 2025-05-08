@@ -11,5 +11,5 @@ class Data(metaclass=abc.ABCMeta):
         )
 
     @abc.abstractmethod
-    def get_hay_price_data(self):
+    def get_hay_price_data(self=None):
         raise NotImplementedError
