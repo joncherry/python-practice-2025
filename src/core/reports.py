@@ -1,11 +1,11 @@
-from ports import endpoint
+from ports import endpointreport
 from connections import externalsource
 from connections import database
 from connections import amazonscraper
 from connections import motorolascraper
 
 
-class HomeHayPriceData(endpoint.Data):
+class HomeHayPriceData(endpointreport.Data):
     def get_endpoint_report(self=None):
         source_data = externalsource.connection()
         home_prices = source_data.get_home_price_data()
@@ -32,14 +32,14 @@ def calculationsOnHomeAndHay(home_prices, hay_prices):
     return home_and_hay_results
 
 
-class AmazonData(endpoint.Data):
+class AmazonData(endpointreport.Data):
     def get_endpoint_report(self=None):
         amazon_scraper_data = amazonscraper.connection()
         amazon_results = amazon_scraper_data.get_scrape_result()
         return amazon_results
 
 
-class MotorolaData(endpoint.Data):
+class MotorolaData(endpointreport.Data):
     def get_endpoint_report(self=None):
         motorola_scraper_data = motorolascraper.connection()
         motorola_results = motorola_scraper_data.get_scrape_result()

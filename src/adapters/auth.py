@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
 import flask
 import requests
 
@@ -15,8 +14,8 @@ CLIENT_SECRETS_FILE = "client_secret.json"
 # The OAuth 2.0 access scope allows for access to the
 # authenticated user's account and requires requests to use an SSL connection.
 SCOPES = [
-    "https://www.googleapis.com/auth/drive.metadata.readonly",
-    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
 ]
 API_SERVICE_NAME = "drive"
 API_VERSION = "v2"
@@ -33,55 +32,30 @@ def index():
     return print_index_table()
 
 
-@app.route("/drive")
+@app.route("/email")
 def drive_api_request():
     if "credentials" not in flask.session:
         return flask.redirect("authorize")
 
     features = flask.session["features"]
 
-    if features["drive"]:
-        # Load credentials from the session.
-        credentials = google.oauth2.credentials.Credentials(
-            **flask.session["credentials"]
-        )
-
-        drive = googleapiclient.discovery.build(
-            API_SERVICE_NAME, API_VERSION, credentials=credentials
-        )
-
-        files = drive.files().list().execute()
-
-        # Save credentials back to session in case access token was refreshed.
-        # ACTION ITEM: In a production app, you likely want to save these
-        #              credentials in a persistent database instead.
-        flask.session["credentials"] = credentials_to_dict(credentials)
-
-        return flask.jsonify(**files)
+    if features["email"]:
+        return "email yep!"
     else:
-        # User didn't authorize read-only Drive activity permission.
-        # Update UX and application accordingly
-        return "<p>Drive feature is not enabled.</p>"
+        return "<p>email permission was not granted</p>"
 
 
-@app.route("/calendar")
+@app.route("/profile")
 def calendar_api_request():
     if "credentials" not in flask.session:
         return flask.redirect("authorize")
 
     features = flask.session["features"]
 
-    if features["calendar"]:
-        # User authorized Calendar read permission.
-        # Calling the APIs, etc.
-        return (
-            "<p>User granted the Google Calendar read permission. "
-            + "This sample code does not include code to call Calendar</p>"
-        )
+    if features["profile"]:
+        return "profile yep!"
     else:
-        # User didn't authorize Calendar read permission.
-        # Update UX and application accordingly
-        return "<p>Calendar feature is not enabled.</p>"
+        return "<p>profile permission was not granted.</p>"
 
 
 @app.route("/authorize")
@@ -108,7 +82,8 @@ def authorize():
     # Store the state so the callback can verify the auth server response.
     flask.session["state"] = state
 
-    return flask.redirect(authorization_url)
+    # return flask.redirect(authorization_url)
+    return authorization_url + "\n"
 
 
 @app.route("/oauth2callback")
@@ -137,7 +112,7 @@ def oauth2callback():
     # Check which scopes user granted
     features = check_granted_scopes(credentials)
     flask.session["features"] = features
-    return flask.redirect("/")
+    return "Success!"
 
 
 @app.route("/revoke")
@@ -150,13 +125,14 @@ def revoke():
 
     credentials = google.oauth2.credentials.Credentials(**flask.session["credentials"])
 
-    revoke = requests.post(
+    revoke_resp = requests.post(
         "https://oauth2.googleapis.com/revoke",
         params={"token": credentials.token},
         headers={"content-type": "application/x-www-form-urlencoded"},
+        timeout=60
     )
 
-    status_code = getattr(revoke, "status_code")
+    status_code = getattr(revoke_resp, "status_code")
     if status_code == 200:
         return "Credentials successfully revoked." + print_index_table()
     else:
@@ -184,20 +160,20 @@ def credentials_to_dict(credentials):
 def check_granted_scopes(credentials):
     features = {}
     if (
-        "https://www.googleapis.com/auth/drive.metadata.readonly"
+        "https://www.googleapis.com/auth/userinfo.email"
         in credentials["granted_scopes"]
     ):
-        features["drive"] = True
+        features["email"] = True
     else:
-        features["drive"] = False
+        features["email"] = False
 
     if (
-        "https://www.googleapis.com/auth/calendar.readonly"
+        "https://www.googleapis.com/auth/userinfo.profile"
         in credentials["granted_scopes"]
     ):
-        features["calendar"] = True
+        features["profile"] = True
     else:
-        features["calendar"] = False
+        features["profile"] = False
 
     return features
 
@@ -224,4 +200,3 @@ def print_index_table():
         + "    API request</a> again, you should go back to the auth flow."
         + "</td></tr></table>"
     )
-

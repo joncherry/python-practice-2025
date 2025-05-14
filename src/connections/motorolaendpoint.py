@@ -1,6 +1,6 @@
-from ports import endpoint
-from core import endpoints
+from ports import endpointreport
+from core import reports
 
 
-def connection() -> endpoint.Data:
-    return endpoints.MotorolaData
+def connection() -> endpointreport.Data:
+    return reports.MotorolaData
