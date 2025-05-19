@@ -5,11 +5,11 @@ class Data(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (
-            hasattr(subclass, "get_hay_price_data")
-            and callable(subclass.get_hay_price_data)
+            hasattr(subclass, "get_endpoint_report")
+            and callable(subclass.get_endpoint_report)
             or NotImplemented
         )
 
     @abc.abstractmethod
-    def get_hay_price_data(self=None):
+    def get_endpoint_report(self=None):
         raise NotImplementedError

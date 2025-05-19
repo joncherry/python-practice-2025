@@ -1,0 +1,5 @@
+# Google Oauth
+
+To not manage authorization and users for API endpoints, using google oauth may be beneficial. In this project I just used it since it was on the shopping list of things to practice.
+
+I wanted the API endpoints to be usable from both the browser and the terminal. This means that when the user signs in via the terminal it opens the browser so that Google sign in can be completed. This is basically like switching browsers, so the session cookie can't be stored in the browser, instead I am keeping track of sessions in a sqlite db so that the google sign in can be invalidated after 24 hours. In a production app, you would probably have a frontend for the API endpoints so that the cookie could be stored in the browser. If you had to keep track of the session on the server instead of the browser on a production app, you would use something like redis instead of sqlite. In the future I may update this to use docker and redis so that it will be closer to a real production app.

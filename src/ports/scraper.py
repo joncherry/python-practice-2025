@@ -11,5 +11,5 @@ class Data(metaclass=abc.ABCMeta):
         )
 
     @abc.abstractmethod
-    def get_scrape_result(self):
+    def get_scrape_result(self=None):
         raise NotImplementedError

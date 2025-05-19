@@ -1,15 +1,18 @@
-from bs4 import BeautifulSoup
-from ports import scraper
 import time
+import csv
+import io
+
+from bs4 import BeautifulSoup
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+
+from ports import scraper
 
 
 class ItemFindException(Exception):
@@ -21,7 +24,7 @@ class URLRequestException(Exception):
 
 
 class Data(scraper.Data):
-    def get_scrape_result(self):
+    def get_scrape_result(self=None):
 
         urls = [
             "https://www.motorola.com/us/en/family/razr.html",
@@ -66,7 +69,7 @@ def with_retry(url, tries):
             return ""
         tries -= tries
         result = with_retry(url, tries)
-        return result
+    return result
 
 
 def make_request(url, wait_class_name, mode="wait"):

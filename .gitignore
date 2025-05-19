@@ -1,2 +1,4 @@
 **/__pycache__
 *.csv
+*.json
+my_database.db
