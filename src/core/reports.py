@@ -1,3 +1,6 @@
+import csv
+import io
+
 from ports import endpointreport
 from connections import externalsource
 from connections import database
@@ -29,18 +32,49 @@ def calculationsOnHomeAndHay(home_prices, hay_prices):
                 "ratio": home_prices[state] / hay_prices[state],
             }
         )
-    return home_and_hay_results
+    with io.StringIO() as csvfile:
+        csv_writer = csv.DictWriter(
+            csvfile,
+            fieldnames=["stateName", "medianHomePrice", "medianHayPrice", "ratio"],
+        )
+        csv_writer.writeheader()
+        csv_writer.writerows(home_and_hay_results)
+        return csvfile.getvalue()
 
 
 class AmazonData(endpointreport.Data):
     def get_endpoint_report(self=None):
         amazon_scraper_data = amazonscraper.connection()
         amazon_results = amazon_scraper_data.get_scrape_result()
-        return amazon_results
+
+        amazon_keys = None
+        if len(amazon_results) > 0:
+            amazon_keys = amazon_results[0].keys()
+
+        with io.StringIO() as csvfile:
+            csv_writer = csv.DictWriter(
+                csvfile,
+                fieldnames=amazon_keys,
+            )
+            csv_writer.writeheader()
+            csv_writer.writerows(amazon_results)
+            return csvfile.getvalue()
 
 
 class MotorolaData(endpointreport.Data):
     def get_endpoint_report(self=None):
         motorola_scraper_data = motorolascraper.connection()
         motorola_results = motorola_scraper_data.get_scrape_result()
-        return motorola_results
+
+        motorola_keys = None
+        if len(motorola_results) > 0:
+            motorola_keys = motorola_results[0].keys()
+
+        with io.StringIO() as csvfile:
+            csv_writer = csv.DictWriter(
+                csvfile,
+                fieldnames=motorola_keys,
+            )
+            csv_writer.writeheader()
+            csv_writer.writerows(motorola_results)
+            return csvfile.getvalue()

@@ -1,6 +1,7 @@
 import nasdaqdatalink
-from ports import externalsource
 import yaml
+
+from ports import externalsource
 
 
 class Data(externalsource.Data):

@@ -1,6 +1,8 @@
-from google.cloud import bigquery
-from ports import database
 import numpy
+
+from google.cloud import bigquery
+
+from ports import database
 
 
 class Data(database.Data):
@@ -12,7 +14,7 @@ class Data(database.Data):
 def request_results():
     client = bigquery.Client()
 
-    query = f"""
+    query = """
         SELECT
             state_name,
             ARRAY_AGG(value) as values

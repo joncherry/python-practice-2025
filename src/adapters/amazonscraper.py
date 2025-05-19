@@ -1,12 +1,17 @@
-import requests
-from bs4 import BeautifulSoup
-from ports import scraper
 import time
+import requests
+
+from bs4 import BeautifulSoup
+
+from ports import scraper
 
 
 class Data(scraper.Data):
     def get_scrape_result(self=None):
         url = "https://www.amazon.com/s?k=motorola"
+
+        # self imposed rate limit
+        time.sleep(1)
 
         response = requests.get(
             url,
@@ -28,9 +33,6 @@ class Data(scraper.Data):
 
         # TODO: add caching so that we don't have to reload the data directly every time.
 
-        # TODO: maybe add eponetial back off to repect rate limits,
-        # but right now its pointless because this request runs only once per run of the whole program.
-        #
         if response.status_code == 429:
             print("sleeping")
             time.sleep(60)
